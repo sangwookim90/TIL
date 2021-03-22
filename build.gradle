@@ -35,13 +35,4 @@ project("spring-security"){
         baseName = 'spring-security'
         version =  '1.0'
     }
-
-    dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        compile('org.projectlombok:lombok')
-        annotationProcessor ('org.projectlombok:lombok')
-    }
 }
