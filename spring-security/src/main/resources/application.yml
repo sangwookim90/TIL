@@ -1,2 +1,12 @@
-server:
-  port: 8080
+spring:
+  thymeleaf:
+    prefix: classpath:templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+
+##############################################################################
+# 로그 환경 설정
+##############################################################################
+logging:
+  config: classpath:logback-security.xml

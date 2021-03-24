@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod= "60 seconds">
+
+    <!-- 로그 위치 -->
+    <property name="LOG_DIR" value="./logs" />
+    <!-- Logrotate-->
+    <springProfile name="!local,!test">
+        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_DIR}/spring-security.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>180</maxHistory> <!-- 보관기간 -->
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%F]%M\(%L\) : %m%n</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%F]%M\(%L\) : %m%n</pattern>
+        </layout>
+    </appender>
+
+
+    <springProfile name="default">
+    	<logger name="org.springframework" 								level="DEBUG"/>
+	    <logger name="me.helpeachother.springsecurity" 					level="DEBUG"/>
+		<logger name="org.hibernate.type.descriptor.sql.BasicBinder" 	level="DEBUG"/>
+	    <logger name="org.hibernate.stat" 								level="DEBUG" />
+	    <logger name="org.hibernate.SQL" 								level="DEBUG" />
+	    <logger name="org.hibernate.type" 								level="DEBUG" />
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+</configuration>

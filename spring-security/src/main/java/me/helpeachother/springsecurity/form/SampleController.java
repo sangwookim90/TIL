@@ -20,7 +20,7 @@ public class SampleController {
         } else {
             model.addAttribute("message", "Hello, " + principal.getName());
         }
-        return "index";
+        return "login";
     }
 
     @GetMapping("/info")
@@ -40,6 +40,18 @@ public class SampleController {
     public String admin(Model model, Principal principal) {
         model.addAttribute("message", "Hello Admin, " + principal.getName());
         return "admin";
+    }
+
+    @GetMapping("/loginFail")
+    public String loginFail(Model model, Principal principal) {
+        model.addAttribute("message", "loginFail");
+        return "loginFail";
+    }
+
+    @GetMapping("/loginSuccess")
+    public String loginSuccess(Model model, Principal principal) {
+        model.addAttribute("message", "loginSuccess");
+        return "loginSuccess";
     }
 
 }
