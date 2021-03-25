@@ -1,3 +1,4 @@
 rootProject.name = 'study'
 include 'spring-security'
+include 'springboot-mybatis'
 

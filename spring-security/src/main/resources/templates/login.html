@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>로그인</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+</head>
+
+<body class="login">
+  <div class="login-main">
+    <ul>
+      <li class="login-main-text1">"Hello, Cloud"</li>
+      <li class="login-main-text2">
+        <p>KB 금융그룹의 <br /><span>Hybrid-Multi Cloud 솔루션</span></p>
+        <p class="version"></p>
+      </li>
+    </ul>
+    <div class="login-form">
+      <form action="/login" method="post" name="loginForm">
+        <input type="text" name="username" id="userNm" placeholder="사번 입력" onkeyup="validate.onkeyup(this);" patterns="0" maxlength="20" title="사번" required />
+        <p class="input-guide-message"></p>
+        <input type="password" name="password" id="password" placeholder="비밀번호 입력" onkeyup="validate.onkeyup(this);" patterns="2" maxlength="12" title="비밀번호" required />
+        <p class="input-guide-message"></p>
+        <p class="login-form-text">최초 로그인 비밀번호 : "사번 + MMDD(멤버 등록일)"<br />(예:d2001230101)</p>
+        <ul class="login-button-area">
+          <li>
+            <input type="checkbox" class="login-check" id="remember-me" name="remember-me" />
+            <label class="checkbox-switch" for="remember-me">자동 로그인</label>
+          </li>
+          <li><button id="submitbutton" type="submit" class="login-button" disabled>로그인</button></li>
+        </ul>
+      </form>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+    /**
+     * 폼 유효성 체크
+     */
+
+    var validate = {
+      confirmed: false,
+      patterns: [
+        {
+          id: 0,
+          name: "로그인 아이디",
+          message: "사번을 정확히 입력해 주세요.",
+          regexp: /^.{1,20}$/
+        },
+        {
+          id: 1,
+          name: "비밀번호 변경",
+          message: "비밀번호를 정확히 입력해 주세요.",
+          regexp: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,12}$/
+        },
+        {
+          id: 2,
+          name: "비밀번호",
+          message: "비밀번호를 정확히 입력해 주세요.",
+          regexp: /^.{1,12}$/
+        }
+      ],
+      // 프로젝트 유효성 체크
+      onkeyup: function onkeyup(el) {
+        var num = el.getAttribute("patterns");
+        var patterns = validate.patterns[num];
+        var guideMessage = el.nextElementSibling;
+
+        if (!patterns.regexp.test(el.value)) {
+          el.classList.add("validation-error");
+          guideMessage.innerHTML = patterns.message;
+          validate.checkForm();
+          return false;
+        }
+
+        el.classList.remove("validation-error");
+        guideMessage.innerHTML = "";
+        validate.checkForm();
+      },
+      // 아이디, 패스워드 유효성 규칙을 통과하면 로그인 버튼 활성화
+      checkForm: function checkForm() {
+        var isValidate = document.querySelectorAll(".validation-error").length;
+        var loginButton = document.getElementById("submitbutton");
+        isValidate === 0
+          ? (loginButton.disabled = false)
+          : (loginButton.disabled = true);
+      }
+    };
+
+    /*<![CDATA[*/
+    var message = '[[ ${message} ]]';
+    /*]]*/
+    if (message) alert(message);
+  </script>
+</body>
+
+</html>
