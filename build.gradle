@@ -53,3 +53,19 @@ project("springboot-mybatis") {
         version =  '1.0'
     }
 }
+
+//project("secretcode") {
+//    apply plugin:  'org.springframework.boot'
+//    apply plugin: 'io.spring.dependency-management'
+//    apply plugin: 'org.asciidoctor.convert' version '1.5.8'
+//    apply plugin: 'java'
+//
+//    group = 'me.helpeachother'
+//    version = '0.0.1-SNAPSHOT'
+//    sourceCompatibility = '1.8'
+//
+//    bootJar {
+//        baseName = 'secretcode'
+//        version =  '1.0'
+//    }
+//}
