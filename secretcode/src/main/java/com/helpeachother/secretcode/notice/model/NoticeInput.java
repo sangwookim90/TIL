@@ -5,19 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Notice {
+public class NoticeInput {
 
-    // ID, 제목, 내용, 작성일
-    private Long id;
+    //제목, 내용
     private String title;
     private String contents;
-    private LocalDateTime regDate;
 
 }
