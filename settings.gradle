@@ -3,5 +3,4 @@ include 'spring-security'
 include 'springboot-mybatis'
 include 'secretcode'
 include 'design-pattern'
-include 'clean-code'
 
