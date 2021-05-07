@@ -14,12 +14,12 @@
     </appender>
 
     <!-- 로거 (level: trace, debug, info, warn, error)-->
-    <logger name="board" level="DEBUG" appender-ref="console"/>
+    <logger name="board" level="INFO" appender-ref="console"/>
     <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog"/>
     <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog"/>
 
     <!-- 루트 로거 -->
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="console"/>
     </root>
 </configuration>
