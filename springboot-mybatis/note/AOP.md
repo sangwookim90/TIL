@@ -28,6 +28,5 @@
 - execution(* board..select*(*)) : board 패키지의 모든 하위 패키지에 있는 select로 시작하고 파라미터가 1개인 모든 메서드가 호출 될 때
 - execution(* board..select*(\*,\*)) : board 패키지의 모든 하위 패키지에 있는 select로 시작하고 파라미터가 2개인 모든 메서드가 호출 될 때
 
-
-
-### 
+- within(board.service.boardServiceImpl) : board.service 패키지 밑에 있는 는 boardServiceImpl 클래스의 메서드가 호출될 때
+- within(board.service.*ServiceImpl) : board.service 패키지 밑에 있는 ServiceImpl이라는 이름으로 끝나는 메서드가 호출될 때 
