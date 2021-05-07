@@ -4,14 +4,16 @@ import me.helpeachother.springbootmybatis.board.dto.BoardDto;
 import me.helpeachother.springbootmybatis.board.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class BoardServiceImpl implements BoardService {
 
     @Autowired
-    BoardMapper boardMapper;
+    private BoardMapper boardMapper;
 
     @Override
     public List<BoardDto> selectBoardList() throws Exception {
