@@ -2,12 +2,19 @@ POST http://localhost:8081/api/notice
 Content-Type: application/json
 
 {
+  "title": "1112103120312032103103",
+  "contents": "1112103120312214012041204012401240123-240215021502105120432103103-2-2-30"
+}
+###
+POST http://localhost:8081/api/notice
+Content-Type: application/json
+{
   "title": "타이틀3",
-  "contents": "contents3"
+  "contents": "contents4"
 }
 
 ###
-GET http://localhost:8081/api/notice/1
+GET http://localhost:8081/api/notice/3
 
 ###
 PUT http://localhost:8081/api/notice/1
@@ -19,3 +26,26 @@ Content-Type: application/json
 }
 
 ###
+PATCH http://localhost:8081/api/notice/1/hits
+Content-Type: application/json
+
+
+###
+DELETE http://localhost:8081/api/notice/1
+Content-Type: application/json
+
+###
+DELETE http://localhost:8081/api/notice
+Content-Type: application/json
+
+{
+  "idList": [1,2]
+}
+
+###
+GET http://localhost:8081/api/notice/latest/3
+
+###
+
+
+

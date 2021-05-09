@@ -36,4 +36,10 @@ public class Notice {
 
     @Column
     private int likes;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
+
+    @Column
+    private LocalDateTime deletedDate;
 }

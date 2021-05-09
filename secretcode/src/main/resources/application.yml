@@ -13,6 +13,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: root
     password: '1111'
+    initialization-mode: always
 
   jpa:
     hibernate:
@@ -21,7 +22,7 @@ spring:
       # update: 변경된 스키마를 적용
       # create: SessionFactory 시작 시점에 drop을 실행하고 create를 실행
       # validate: 변경된 스키마가 존재하면 변경사항을 출력하고 app을 종료
-      ddl-auto: update
+      ddl-auto: create-drop
       # use-new-id-generator-mappings: false
 
     # Spring Application 실행시점에 Hibernate에서 자동으로 DDL을 생성하여, 필요한 Database의 Table설정들을 자동으로 실행

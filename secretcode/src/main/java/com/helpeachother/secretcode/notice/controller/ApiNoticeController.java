@@ -1,14 +1,24 @@
 package com.helpeachother.secretcode.notice.controller;
 
 import com.helpeachother.secretcode.notice.entity.Notice;
+import com.helpeachother.secretcode.notice.exception.AlreadyDeletedException;
+import com.helpeachother.secretcode.notice.exception.DuplicateNoticeException;
+import com.helpeachother.secretcode.notice.exception.NoticeNotFoundException;
+import com.helpeachother.secretcode.notice.model.NoticeDeleteInput;
 import com.helpeachother.secretcode.notice.model.NoticeInput;
-import com.helpeachother.secretcode.notice.model.NoticeModel;
+import com.helpeachother.secretcode.notice.model.ResponseError;
 import com.helpeachother.secretcode.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,74 +30,129 @@ public class ApiNoticeController {
 
     private final NoticeRepository noticeRepository;
 
-    @GetMapping("/api/notice")
-    public NoticeModel notice() {
-
-        NoticeModel noticeModel = new NoticeModel();
-        noticeModel.setId(1L);
-        noticeModel.setTitle("공지사항");
-        noticeModel.setContents("공지사항입니다.");
-        noticeModel.setRegDate(LocalDateTime.of(2021, 4,24,10,5));
-
-        return noticeModel;
-    }
-
-    @GetMapping("/api/notices")
-    public List<NoticeModel> notices() {
-
-        List<NoticeModel> noticeModels = new ArrayList<>();
-
-        noticeModels.add(NoticeModel.builder().title("공지1")
-                .contents("공지1 내용")
-                .regDate(LocalDateTime.of(2021, 4,24,10,5)).build());
-
-        noticeModels.add(NoticeModel.builder().title("공지2")
-                .contents("공지2 내용")
-                .regDate(LocalDateTime.of(2021, 4,24,10,15)).build());
-
-        return noticeModels;
-
-
-    }
-
-    @GetMapping("/api/notice/count")
-    public int noticeCount() {
-
-        return 10;
-    }
-
     @PostMapping("/api/notice")
-    public Notice addNotice(@RequestBody NoticeInput noticeInput) {
-        Notice notice = Notice.builder()
-                .title(noticeInput.getTitle())
-                .contents(noticeInput.getContents())
-                .regDate(LocalDateTime.now())
-                .hits(0)
-                .likes(0)
-                .build();
+    public ResponseEntity<Object> addNotice(@RequestBody @Valid NoticeInput noticeInput, Errors errors) {
 
-        noticeRepository.save(notice);
+        // Validation
+        if(errors.hasErrors()) {
+            List<ResponseError> responseErrors = new ArrayList<>();
+            errors.getAllErrors().stream().forEach(e-> {
+                responseErrors.add(ResponseError.of((FieldError)e));
+            });
+            return new ResponseEntity<>(responseErrors, HttpStatus.BAD_REQUEST);
+        }
 
-        return notice;
+        // 중복 체크
+        LocalDateTime checkDate = LocalDateTime.now().minusMinutes(1);
+
+//        Optional<List<Notice>> noticeList = noticeRepository.findByTitleAndContentsAndRegDateIsGreaterThanEqual(
+//                noticeInput.getTitle(),
+//                noticeInput.getContents(),
+//                checkDate);
+//        if(noticeList.isPresent()) {
+//            if (noticeList.get().size() > 0) {
+//                throw new DuplicateNoticeException("동일한 내용의 공지사항이 존재합니다.");
+//            }
+//        }
+        int noticeCount = noticeRepository.countByTitleAndContentsAndRegDateIsGreaterThanEqual(
+                noticeInput.getTitle(),
+                noticeInput.getContents(),
+                checkDate);
+        if(noticeCount > 0) {
+            throw new DuplicateNoticeException("동일한 내용의 공지사항이 존재합니다.");
+        }
+
+        noticeRepository.save(Notice.builder()
+                            .title(noticeInput.getTitle())
+                            .contents(noticeInput.getContents())
+                            .regDate(LocalDateTime.now())
+                            .hits(0)
+                            .likes(0)
+                            .deleted(false)
+                            .build());
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/notice/{id}")
     public Notice notice(@PathVariable Long id) {
-        Optional<Notice> notice = noticeRepository.findById(id);
-        if (notice.isPresent()) {
-            return notice.get();
-        }
-        return null;
+        return noticeRepository.findById(id).orElseThrow(NoticeNotFoundException::new);
+    }
+
+    @ExceptionHandler(NoticeNotFoundException.class)
+    public ResponseEntity<String> handlerNoticeNotFoundException(NoticeNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AlreadyDeletedException.class)
+    public ResponseEntity<String> handlerAlreadyDeletedException(AlreadyDeletedException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(DuplicateNoticeException.class)
+    public ResponseEntity<?> handlerDuplicateNoticeException(DuplicateNoticeException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/api/notice/{id}")
     public void updateNotice(@PathVariable Long id, @RequestBody NoticeInput noticeInput) {
-        Optional<Notice> notice = noticeRepository.findById(id);
-        if(notice.isPresent()) {
-            notice.get().setTitle(noticeInput.getTitle());
-            notice.get().setContents(noticeInput.getContents());
-            notice.get().setUpdateDate(LocalDateTime.now());
-            noticeRepository.save(notice.get());
+
+//        Optional<Notice> notice = noticeRepository.findById(id);
+//        if(!notice.isPresent()) {
+//            // 예외 발생
+//            throw new NoticeNotFoundException("공지사항의 글이 존재하지 않습니다.");
+//        }
+
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new NoticeNotFoundException("공지사항의 글이 존재하지 않습니다."));
+
+        notice.setTitle(noticeInput.getTitle());
+        notice.setContents(noticeInput.getContents());
+        notice.setUpdateDate(LocalDateTime.now());
+        noticeRepository.save(notice);
+    }
+
+    @PatchMapping("/api/notice/{id}/hits")
+    public void noticeHits(@PathVariable Long id) {
+        Notice notice = noticeRepository.findById(id).orElseThrow(NoticeNotFoundException::new);
+
+        notice.setHits(notice.getHits()+1);
+        noticeRepository.save(notice);
+    }
+
+    @DeleteMapping("/api/notice/{id}")
+    public void deleteNotice(@PathVariable Long id) {
+        Notice notice = noticeRepository.findById(id).orElseThrow(NoticeNotFoundException::new);
+
+        if(notice.isDeleted()) {
+            throw new AlreadyDeletedException("이미 삭제된 글입니다.");
         }
+
+        notice.setDeleted(true);
+        notice.setDeletedDate(LocalDateTime.now());
+        noticeRepository.save(notice);
+    }
+
+    @DeleteMapping("/api/notice")
+    public void deleteNoticeList(@RequestBody NoticeDeleteInput noticeDeleteInput) {
+        List<Notice> noticeList = noticeRepository.findByIdIn(noticeDeleteInput.getIdList())
+                .orElseThrow(NoticeNotFoundException::new);
+
+        noticeList.stream().forEach(e ->{
+            e.setDeleted(true);
+            e.setDeletedDate(LocalDateTime.now());
+        });
+
+        noticeRepository.saveAll(noticeList);
+    }
+
+    @DeleteMapping("/api/notice/all")
+    public void deleteAll() {
+        noticeRepository.deleteAll();
+    }
+
+    @GetMapping("/api/notice/latest/{size}")
+    public Page<Notice> noticeLatest(@PathVariable int size) {
+        return noticeRepository.findAll(PageRequest.of(0, size, Sort.Direction.DESC, "regDate"));
     }
 }
