@@ -14,10 +14,16 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import java.util.Collections;
 
+/**
+ *  AOP를 이용해서 트랜잭션을 설정하면, 새로운 클래스나 메서드가 추가될 때 따로 어노테이션을 붙이지 않아도 자동적으로 트랜잭션 처리가 됨.
+ *  어노테이션의 누락이나 잘못된 사용에 따른 문제 미연의 방지 가능
+ *
+ *  트랜잭션이 필요 없는 곳까지 적용되어서 성능에 영향을 미침
+ */
 @Configuration
 public class TransactionAspect {
     private static final String AOP_TRANSACTION_METHOD_NAME = "*";
-    private static final String AOP_TRANSACTION_EXPRESSION = "execution(* board..service.*Impl.*(..))";
+        private static final String AOP_TRANSACTION_EXPRESSION = "execution(* board..service.*Impl.*(..))";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
