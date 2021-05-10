@@ -14,14 +14,42 @@
         ]]>
     </select>
 
-    <select id="insertBoard" parameterType="me.helpeachother.springbootmybatis.board.dto.BoardDto">
+    <insert id="insertBoard" parameterType="me.helpeachother.springbootmybatis.board.dto.BoardDto"
+            useGeneratedKeys="true" keyProperty="boardIdx">
         <![CDATA[
             INSERT INTO t_board
             ( title, contents, created_datetime, creator_id )
             VALUES
             ( #{title}, #{contents}, NOW(), 'admin' )
         ]]>
-    </select>
+    </insert>
+    <insert id="insertBoardFileList" parameterType="me.helpeachother.springbootmybatis.board.dto.BoardFileDto">
+        <![CDATA[
+            INSERT INTO t_file
+            (   board_idx, original_file_name, stored_file_path, file_size,
+                creator_id, created_datetime
+            )
+            VALUES
+        ]]>
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.boardIdx},
+            #{item.originalFileName},
+            #{item.storedFilePath},
+            #{item.fileSize},
+            'admin',
+            NOW()
+            )
+        </foreach>
+        <!--
+            파일 목록은 하나 이상이기 때문에 foreach문을 사용해서 collection의 반복처리를 한다.
+            collection : list or array
+            item : 별칭
+            separator : 반복되는 문자열을 구분하기 위해 사용 (Values 가 여러개일 경우, separator로 자동으로 ,를 붙여줌)
+        -->
+
+    </insert>
+
 
     <select id="selectBoardDetail" parameterType="int" resultType="me.helpeachother.springbootmybatis.board.dto.BoardDto">
         <![CDATA[
