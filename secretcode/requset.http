@@ -46,6 +46,50 @@ Content-Type: application/json
 GET http://localhost:8081/api/notice/latest/3
 
 ###
+POST http://localhost:8081/api/user
+Content-Type: application/json
 
+{
+  "email" : "test2@test.com",
+  "userName" : "test",
+  "password" : "12341234",
+  "phone" : "010-4939-2394"
+}
 
+###
+PUT http://localhost:8081/api/user/2
+Content-Type: application/json
+
+{
+"phone" : "010-1234-5678"
+}
+
+###
+GET http://localhost:8081/api/user/1
+
+###
+GET http://localhost:8081/api/user/1/notice
+
+###
+PATCH http://localhost:8081/api/user/1/password
+Content-Type: application/json
+
+{
+  "password": "12341234",
+  "newPassword": "12349124"
+}
+
+###
+GET http://localhost:8081/api/user
+Content-Type: application/json
+
+{
+  "userName": "test",
+  "phone" : "010-4939-2394"
+}
+
+###
+GET http://localhost:8081/api/user/1/notice/like
+
+###
 

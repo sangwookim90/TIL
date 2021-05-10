@@ -13,7 +13,6 @@ spring:
     driver-class-name: org.h2.Driver
     username: root
     password: '1111'
-    initialization-mode: always
 
   jpa:
     hibernate:
@@ -26,7 +25,7 @@ spring:
       # use-new-id-generator-mappings: false
 
     # Spring Application 실행시점에 Hibernate에서 자동으로 DDL을 생성하여, 필요한 Database의 Table설정들을 자동으로 실행
-    generate-ddl: false
+    generate-ddl: true
 
     properties:
       format_sql: true
