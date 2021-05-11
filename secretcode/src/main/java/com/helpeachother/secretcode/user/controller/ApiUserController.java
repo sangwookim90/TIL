@@ -1,5 +1,7 @@
 package com.helpeachother.secretcode.user.controller;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.helpeachother.secretcode.notice.entity.Notice;
 import com.helpeachother.secretcode.notice.entity.NoticeLike;
 import com.helpeachother.secretcode.notice.model.NoticeVo;
@@ -8,10 +10,11 @@ import com.helpeachother.secretcode.notice.repository.NoticeLikeRepository;
 import com.helpeachother.secretcode.notice.repository.NoticeRepository;
 import com.helpeachother.secretcode.user.entity.User;
 import com.helpeachother.secretcode.user.exception.ExistsEmailException;
-import com.helpeachother.secretcode.user.exception.PasswordNotMathException;
+import com.helpeachother.secretcode.user.exception.PasswordNotMatchException;
 import com.helpeachother.secretcode.user.exception.UserNotFoundException;
 import com.helpeachother.secretcode.user.model.*;
 import com.helpeachother.secretcode.user.repository.UserRepository;
+import com.helpeachother.secretcode.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -124,7 +128,7 @@ public class ApiUserController {
         }
 
         User user = userRepository.findByIdAndPassword(id, userInputPassword.getPassword())
-                .orElseThrow(PasswordNotMathException::new);
+                .orElseThrow(PasswordNotMatchException::new);
 
         user.setPassword(userInputPassword.getNewPassword());
         userRepository.save(user);
@@ -178,6 +182,35 @@ public class ApiUserController {
         return noticeLikeList;
     }
 
+    @PostMapping("/api/user/login")
+    public ResponseEntity<?> createToken(@RequestBody @Valid UserLogin userLogin, Errors errors) {
+        List<ResponseError> responseErrorList = new ArrayList<>();
+        if(errors.hasErrors()) {
+            errors.getAllErrors().forEach((e) -> {
+                responseErrorList.add(ResponseError.of((FieldError)e));
+            });
+
+            return new ResponseEntity<>(responseErrorList, HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userRepository.findByEmail(userLogin.getEmail()).orElseThrow(UserNotFoundException::new);
+
+        if(PasswordUtils.equalPassword(userLogin.getPassword(), user.getPassword()) == false) {
+            throw new PasswordNotMatchException();
+        }
+
+        // 토큰발행시점
+        String token = JWT.create()
+                .withExpiresAt(new Date())
+                .withClaim("user_id", user.getId())
+                .withSubject(user.getUserName())
+                .withIssuer(user.getEmail())
+                .sign(Algorithm.HMAC512("passwordkey".getBytes()));
+
+        return ResponseEntity.ok().body(UserLoginToken.builder().token(token).build());
+
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> UserNotFoundExceptionHandler(UserNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
@@ -188,8 +221,8 @@ public class ApiUserController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PasswordNotMathException.class)
-    public ResponseEntity<?> PasswordExceptionHandler(PasswordNotMathException exception) {
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ResponseEntity<?> PasswordExceptionHandler(PasswordNotMatchException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
