@@ -102,5 +102,10 @@ Content-Type: application/json
 
 
 ###
+PATCH http://localhost:8081/api/user/login
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcl9pZCI6MSwiaXNzIjoidGVzdDJAdGVzdC5jb20iLCJleHAiOjE2MjM2NTA5NjV9.TA-cxM156D7k-NgYq7YqSIuR_8E4a5dVFoIncYxwxNQxCNQf82LwODv7PeVyVqXG1ITgsl5GyFp50EGTVTQbqA
 
+###
 
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcl9pZCI6MSwiaXNzIjoidGVzdDJAdGVzdC5jb20iLCJleHAiOjE2MjM2NTEwNjN9.Q9aAu3o6PIK7ds6bP01vSbh_u-cH7Qh3QEXDjz902FeA6Hs-csiJnc_6pVN1oZOw1dngpW1UZzh5_H6mAqG2C

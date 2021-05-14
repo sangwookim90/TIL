@@ -2,6 +2,7 @@ package com.helpeachother.secretcode.user.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.helpeachother.secretcode.notice.entity.Notice;
 import com.helpeachother.secretcode.notice.entity.NoticeLike;
 import com.helpeachother.secretcode.notice.model.NoticeVo;
@@ -14,6 +15,7 @@ import com.helpeachother.secretcode.user.exception.PasswordNotMatchException;
 import com.helpeachother.secretcode.user.exception.UserNotFoundException;
 import com.helpeachother.secretcode.user.model.*;
 import com.helpeachother.secretcode.user.repository.UserRepository;
+import com.helpeachother.secretcode.util.JwtUtils;
 import com.helpeachother.secretcode.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,7 +26,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -199,15 +203,67 @@ public class ApiUserController {
             throw new PasswordNotMatchException();
         }
 
+        // 토큰 유효기간 1개월
+        LocalDateTime expiredDateTime = LocalDateTime.now().plusMonths(1);
+        Date expiredDate = java.sql.Timestamp.valueOf(expiredDateTime);
+
         // 토큰발행시점
         String token = JWT.create()
-                .withExpiresAt(new Date())
+                .withExpiresAt(expiredDate)
                 .withClaim("user_id", user.getId())
                 .withSubject(user.getUserName())
                 .withIssuer(user.getEmail())
                 .sign(Algorithm.HMAC512("passwordkey".getBytes()));
 
         return ResponseEntity.ok().body(UserLoginToken.builder().token(token).build());
+
+    }
+
+    @PatchMapping("/api/user/login")
+    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+        String token = request.getHeader("F-TOKEN");
+        String email = "";
+        try {
+            email = JWT.require(Algorithm.HMAC512("passwordkey".getBytes()))
+                    .build()
+                    .verify(token)
+                    .getIssuer();
+        } catch (SignatureVerificationException e) {
+            throw new PasswordNotMatchException();
+        } catch (Exception e) {
+            throw new PasswordNotMatchException("토큰 발행에 실패하였습니다.");
+        }
+
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        // 토큰 유효기간 1개월
+        LocalDateTime expiredDateTime = LocalDateTime.now().plusMonths(1);
+        Date expiredDate = java.sql.Timestamp.valueOf(expiredDateTime);
+
+        String newToken = JWT.create()
+                .withExpiresAt(expiredDate)
+                .withClaim("user_id", user.getId())
+                .withSubject(user.getUserName())
+                .withIssuer(user.getEmail())
+                .sign(Algorithm.HMAC512("passwordkey".getBytes()));
+
+        return ResponseEntity.ok().body(UserLoginToken.builder().token(newToken).build());
+    }
+
+    @DeleteMapping("/api/user/login")
+    public ResponseEntity<?> removeToken(@RequestHeader("F-TOKEN") String token) {
+        String email = "";
+        try {
+            email = JwtUtils.getIssuer(token);
+        } catch (SignatureVerificationException e) {
+            return new ResponseEntity<>("토큰 정보가 정확하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        // 세션 또는 쿠키 삭제
+        // 블랙리스트 작성
+        // 클라이언트 쿠키 / 로컬스토리지 / 세션 스토리지 삭제
+
+        return ResponseEntity.ok().build();
 
     }
 
