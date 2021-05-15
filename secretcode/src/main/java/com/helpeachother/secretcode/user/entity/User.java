@@ -1,5 +1,6 @@
 package com.helpeachother.secretcode.user.entity;
 
+import com.helpeachother.secretcode.user.model.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,5 +41,11 @@ public class User {
     @Column
     @UpdateTimestamp
     private LocalDateTime updateDate;
+
+    @Column
+    private UserStatus status;
+
+    @Column
+    private boolean lockYn;
 
 }

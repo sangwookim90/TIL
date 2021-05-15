@@ -108,4 +108,28 @@ F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcl9pZCI6MS
 
 ###
 
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwidXNlcl9pZCI6MSwiaXNzIjoidGVzdDJAdGVzdC5jb20iLCJleHAiOjE2MjM2NTEwNjN9.Q9aAu3o6PIK7ds6bP01vSbh_u-cH7Qh3QEXDjz902FeA6Hs-csiJnc_6pVN1oZOw1dngpW1UZzh5_H6mAqG2C
+GET http://localhost:8081/api/admin/user
+
+###
+GET http://localhost:8081/api/admin/user/1
+
+###
+GET http://localhost:8081/api/admin/user/search
+Content-Type: application/json
+
+{
+  "email": "",
+  "userName": "te",
+  "phone": ""
+
+}
+
+###
+PATCH http://localhost:8081/api/admin/user/1/status
+Content-Type: application/json
+
+{
+  "status": 2
+}
+
+###

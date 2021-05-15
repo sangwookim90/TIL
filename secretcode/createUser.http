@@ -1,0 +1,56 @@
+###
+POST http://localhost:8081/api/user
+Content-Type: application/json
+
+{
+  "email" : "test1@test.com",
+  "userName" : "test",
+  "password" : "12341234",
+  "phone" : "010-4939-2394"
+}
+
+###
+POST http://localhost:8081/api/user
+Content-Type: application/json
+
+{
+  "email" : "test2@test.com",
+  "userName" : "test",
+  "password" : "12341234",
+  "phone" : "010-4939-1234"
+}
+
+###
+POST http://localhost:8081/api/user
+Content-Type: application/json
+
+{
+  "email" : "test3@test.com",
+  "userName" : "test",
+  "password" : "12341234",
+  "phone" : "010-1234-2394"
+}
+
+###
+POST http://localhost:8081/api/user
+Content-Type: application/json
+
+{
+  "email" : "test4@test.com",
+  "userName" : "test",
+  "password" : "12341234",
+  "phone" : "010-4633-2352"
+}
+
+###
+POST http://localhost:8081/api/user
+Content-Type: application/json
+
+{
+  "email" : "test5@test.com",
+  "userName" : "test",
+  "password" : "12341234",
+  "phone" : "010-5678-3456"
+}
+
+###
