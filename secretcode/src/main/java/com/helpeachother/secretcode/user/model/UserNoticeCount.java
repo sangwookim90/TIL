@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLoginToken {
+public class UserNoticeCount {
 
-    private String token;
+    private long id;
+    private String email;
+    private String userName;
+    private long noticeCount;
 }

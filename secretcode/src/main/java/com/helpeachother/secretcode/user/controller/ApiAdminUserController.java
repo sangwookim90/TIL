@@ -3,11 +3,10 @@ package com.helpeachother.secretcode.user.controller;
 import com.helpeachother.secretcode.notice.repository.NoticeRepository;
 import com.helpeachother.secretcode.user.entity.User;
 import com.helpeachother.secretcode.user.entity.UserLoginHistory;
-import com.helpeachother.secretcode.user.model.ResponseMessage;
-import com.helpeachother.secretcode.user.model.UserSearch;
-import com.helpeachother.secretcode.user.model.UserStatusInput;
+import com.helpeachother.secretcode.user.model.*;
 import com.helpeachother.secretcode.user.repository.UserLoginHistoryRepository;
 import com.helpeachother.secretcode.user.repository.UserRepository;
+import com.helpeachother.secretcode.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +22,8 @@ public class ApiAdminUserController {
     private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
     private final UserLoginHistoryRepository userLoginHistoryRepository;
+
+    private final UserService userService;
 
     @GetMapping("/api/admin/user")
     public ResponseMessage userList() {
@@ -110,6 +111,58 @@ public class ApiAdminUserController {
         userRepository.save(user);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/api/admin/user/{id}/unlock")
+    public ResponseEntity<?> userUnLock(@PathVariable Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent() == false) {
+            return new ResponseEntity<>(ResponseMessage.fail("사용자 정보가 존재하지 않습니다."), HttpStatus.BAD_REQUEST);
+        }
+
+        User user = optionalUser.get();
+        if(user.isLockYn() == false) {
+            return new ResponseEntity<>(ResponseMessage.fail("이미 접속제한이 해제된 사용자 입니다."), HttpStatus.BAD_REQUEST);
+        }
+
+        user.setLockYn(false);
+        userRepository.save(user);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/api/admin/user/status/count")
+    public ResponseEntity<?> userStatusCount() {
+        UserSummary userSummary = userService.getUserStatusCount();
+        return ResponseEntity.ok().body(userSummary);
+    }
+
+    @GetMapping("/api/admin/user/today")
+    public ResponseEntity<?> todayUser() {
+        List<User> users = userService.getTodayUsers();
+
+        return ResponseEntity.ok().body(ResponseMessage.success(users));
+    }
+
+    @GetMapping("/api/admin/user/notice/count")
+    public ResponseEntity<?> userNoticeCount() {
+        List<UserNoticeCount> userNoticeCountList = userService.getUserNoticeCount();
+        return ResponseEntity.ok().body(ResponseMessage.success(userNoticeCountList));
+    }
+
+    @GetMapping("/api/admin/user/log/count")
+    public ResponseEntity<?> userLogCount() {
+        List<UserLogCount> userLogCounts = userService.getUserLogCount();
+        return ResponseEntity.ok().body(ResponseMessage.success(userLogCounts));
+
+    }
+
+
+    // 좋아요를 가장 많이 한 사용자 목록 리턴
+    @GetMapping("/api/admin/user/like/best")
+    public ResponseEntity<?> bestLikeCount() {
+        List<UserLogCount> userLogCounts = userService.getUserLikeBest();
+        return ResponseEntity.ok().body(ResponseMessage.success(userLogCounts));
     }
 
 }

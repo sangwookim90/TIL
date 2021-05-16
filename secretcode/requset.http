@@ -133,3 +133,15 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:8081/api/admin/user/today
+
+###
+GET http://localhost:8081/api/admin/user/notice/count
+
+###
+GET http://localhost:8081/api/admin/user/log/count
+
+###
+GET http://localhost:8081/api/admin/user/like/best
+
+###
