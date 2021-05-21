@@ -16,6 +16,10 @@ public class ResponseMessage {
     private Object body;
 
     public static ResponseMessage fail(String message) {
+        return fail(message, null);
+    }
+
+    public static ResponseMessage fail(String message, Object data) {
         return ResponseMessage.builder()
                 .header(ResponseMessageHeader.builder()
                         .result(false)
@@ -23,9 +27,14 @@ public class ResponseMessage {
                         .message(message)
                         .status(HttpStatus.BAD_REQUEST.value())
                         .build())
-                .body(null)
+                .body(data)
                 .build();
     }
+
+    public static ResponseMessage success() {
+        return success(null);
+    }
+
 
     public static ResponseMessage success(Object data) {
         return ResponseMessage.builder()

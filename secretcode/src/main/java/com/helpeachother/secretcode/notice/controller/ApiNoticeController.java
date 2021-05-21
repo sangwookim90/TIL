@@ -8,6 +8,9 @@ import com.helpeachother.secretcode.notice.model.NoticeDeleteInput;
 import com.helpeachother.secretcode.notice.model.NoticeInput;
 import com.helpeachother.secretcode.notice.model.ResponseError;
 import com.helpeachother.secretcode.notice.repository.NoticeRepository;
+import com.helpeachother.secretcode.user.entity.User;
+import com.helpeachother.secretcode.user.exception.UserNotFoundException;
+import com.helpeachother.secretcode.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +25,13 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
 public class ApiNoticeController {
 
     private final NoticeRepository noticeRepository;
+    private final UserRepository userRepository;
 
     @PostMapping("/api/notice")
     public ResponseEntity<Object> addNotice(@RequestBody @Valid NoticeInput noticeInput, Errors errors) {
@@ -62,14 +65,17 @@ public class ApiNoticeController {
             throw new DuplicateNoticeException("동일한 내용의 공지사항이 존재합니다.");
         }
 
+        User writer = userRepository.findById(noticeInput.getUserId()).orElseThrow(UserNotFoundException::new);
+
         noticeRepository.save(Notice.builder()
-                            .title(noticeInput.getTitle())
-                            .contents(noticeInput.getContents())
-                            .regDate(LocalDateTime.now())
-                            .hits(0)
-                            .likes(0)
-                            .deleted(false)
-                            .build());
+                .title(noticeInput.getTitle())
+                .contents(noticeInput.getContents())
+                .regDate(LocalDateTime.now())
+                .hits(0)
+                .likes(0)
+                .deleted(false)
+                .user(writer)
+                .build());
 
         return ResponseEntity.ok().build();
     }

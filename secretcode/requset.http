@@ -3,7 +3,8 @@ Content-Type: application/json
 
 {
   "title": "1112103120312032103103",
-  "contents": "1112103120312214012041204012401240123-240215021502105120432103103-2-2-30"
+  "contents": "1112103120312214012041204012401240123-240215021502105120432103103-2-2-30",
+  "userId": 1
 }
 ###
 POST http://localhost:8081/api/notice
@@ -143,5 +144,24 @@ GET http://localhost:8081/api/admin/user/log/count
 
 ###
 GET http://localhost:8081/api/admin/user/like/best
+
+###
+POST http://localhost:8081/api/board/type
+Content-Type: application/json
+
+{
+  "name": "board_2"
+}
+
+###
+PUT http://localhost:8081/api/board/type/1
+Content-Type: application/json
+
+{
+  "name": "board_1"
+}
+
+###
+GET http://localhost:8081/api/board/type
 
 ###
