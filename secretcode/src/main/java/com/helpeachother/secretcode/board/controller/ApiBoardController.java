@@ -1,10 +1,10 @@
 package com.helpeachother.secretcode.board.controller;
 
 import com.helpeachother.secretcode.board.entity.BoardType;
-import com.helpeachother.secretcode.board.model.BoardTypeInput;
-import com.helpeachother.secretcode.board.model.BoardTypeUsing;
-import com.helpeachother.secretcode.board.model.ServiceResult;
+import com.helpeachother.secretcode.board.model.*;
 import com.helpeachother.secretcode.board.service.BoardService;
+import com.helpeachother.secretcode.common.model.ResponseResult;
+import com.helpeachother.secretcode.common.model.ServiceResult;
 import com.helpeachother.secretcode.notice.model.ResponseError;
 import com.helpeachother.secretcode.user.model.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -74,5 +74,33 @@ public class ApiBoardController {
         }
 
         return ResponseEntity.ok().body(ResponseMessage.success());
+    }
+
+    @GetMapping("/api/board/type/count")
+    public ResponseEntity<?> boardTypeCount() {
+        List<BoardTypeCount> list = boardService.getBoardTypeCount();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @PatchMapping("/api/board/{id}/top")
+    public ResponseEntity<?> boardPostTop(@PathVariable Long id) {
+        ServiceResult result = boardService.setBoardTop(id, true);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/api/board/{id}/top/clear")
+    public ResponseEntity<?> boardPostTopClear(@PathVariable Long id) {
+        ServiceResult result = boardService.setBoardTop(id, false);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/api/board/{id}/publish")
+    public ResponseEntity<?> boardPeriod(@PathVariable Long id, @RequestBody BoardPeriod boardPeriod) {
+        ServiceResult result = boardService.setBoardPeriod(id, boardPeriod);
+
+        if(!result.isResult()) {
+            return ResponseResult.fail(result.getMessage());
+        }
+        return ResponseResult.success();
     }
 }

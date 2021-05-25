@@ -150,7 +150,15 @@ POST http://localhost:8081/api/board/type
 Content-Type: application/json
 
 {
-  "name": "board_2"
+  "name": "board_4"
+}
+
+###
+PATCH http://localhost:8081/api/board/type/1/using
+Content-Type: application/json
+
+{
+  "usingYn": true
 }
 
 ###
@@ -163,5 +171,8 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8081/api/board/type
+
+###
+GET http://localhost:8081/api/board/type/count
 
 ###

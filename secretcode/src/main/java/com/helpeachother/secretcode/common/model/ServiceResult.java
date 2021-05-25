@@ -1,4 +1,4 @@
-package com.helpeachother.secretcode.board.model;
+package com.helpeachother.secretcode.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
