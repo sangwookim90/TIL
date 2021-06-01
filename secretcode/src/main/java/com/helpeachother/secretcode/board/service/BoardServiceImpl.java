@@ -1,13 +1,18 @@
 package com.helpeachother.secretcode.board.service;
 
 import com.helpeachother.secretcode.board.entity.Board;
+import com.helpeachother.secretcode.board.entity.BoardHits;
+import com.helpeachother.secretcode.board.entity.BoardLike;
 import com.helpeachother.secretcode.board.entity.BoardType;
 import com.helpeachother.secretcode.board.exception.BoardTypeNotFoundException;
-import com.helpeachother.secretcode.board.model.*;
-import com.helpeachother.secretcode.board.repository.BoardRepository;
-import com.helpeachother.secretcode.board.repository.BoardTypeCustomRepository;
-import com.helpeachother.secretcode.board.repository.BoardTypeRepository;
+import com.helpeachother.secretcode.board.model.BoardPeriod;
+import com.helpeachother.secretcode.board.model.BoardTypeCount;
+import com.helpeachother.secretcode.board.model.BoardTypeInput;
+import com.helpeachother.secretcode.board.model.BoardTypeUsing;
+import com.helpeachother.secretcode.board.repository.*;
 import com.helpeachother.secretcode.common.model.ServiceResult;
+import com.helpeachother.secretcode.user.entity.User;
+import com.helpeachother.secretcode.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,9 @@ public class BoardServiceImpl implements BoardService {
     private final BoardTypeRepository boardTypeRepository;
     private final BoardRepository boardRepository;
     private final BoardTypeCustomRepository boardTypeCustomRepository;
+    private final BoardHitsRepository boardHitsRepository;
+    private final BoardLikeRepository boardLikeRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ServiceResult addBoard(BoardTypeInput boardTypeInput) {
@@ -131,6 +139,60 @@ public class BoardServiceImpl implements BoardService {
         Board board = optionalBoard.get();
         board.setPublishStartDate(boardPeriod.getStartDate());
         board.setPublishEndDate(boardPeriod.getEndDate());
+
+        return ServiceResult.success();
+    }
+
+    @Override
+    public ServiceResult setBoardHits(Long id, String email) {
+        Optional<Board> optionalBoard = boardRepository.findById(id);
+        if(!optionalBoard.isPresent()) {
+            return ServiceResult.fail("게시글이 존재하지 않습니다.");
+        }
+
+        Board board = optionalBoard.get();
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if(!optionalUser.isPresent()) {
+            return ServiceResult.fail("회원 정보가 존재하지 않습니다.");
+        }
+        User user = optionalUser.get();
+
+
+        if(boardHitsRepository.countByBoardAndUser(board, user) > 0) {
+            return ServiceResult.fail("이미 조회한 게시글입니다.");
+        }
+        boardHitsRepository.save(BoardHits.builder()
+                .board(board)
+                .user(user)
+                .regDate(LocalDateTime.now())
+                .build());
+
+        return ServiceResult.success();
+    }
+
+    @Override
+    public ServiceResult setBoardLike(long id, String email) {
+        Optional<Board> optionalBoard = boardRepository.findById(id);
+        if(!optionalBoard.isPresent()) {
+            return ServiceResult.fail("게시글이 존재하지 않습니다.");
+        }
+
+        Board board = optionalBoard.get();
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if(!optionalUser.isPresent()) {
+            return ServiceResult.fail("회원 정보가 존재하지 않습니다.");
+        }
+        User user = optionalUser.get();
+
+        if(boardLikeRepository.countByBoardAndUser(board, user) > 0) {
+            return ServiceResult.fail("이미 좋아요를 눌렀습니다.");
+        }
+
+        boardLikeRepository.save(BoardLike.builder()
+                .board(board)
+                .user(user)
+                .regDate(LocalDateTime.now())
+                .build());
 
         return ServiceResult.success();
     }

@@ -150,7 +150,7 @@ POST http://localhost:8081/api/board/type
 Content-Type: application/json
 
 {
-  "name": "board_4"
+  "name": "게시판1"
 }
 
 ###
@@ -176,3 +176,24 @@ GET http://localhost:8081/api/board/type
 GET http://localhost:8081/api/board/type/count
 
 ###
+POST http://localhost:8081/api/user/login
+Content-Type: application/json
+
+{
+  "email" : "test1@test.com",
+  "password" : "12341234"
+}
+
+###
+PUT http://localhost:8081/api/board/1/hits
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MDYzODkwfQ.tcQNLyTMNsmtyj074HK3X78a5cz95washpWDz1HH_qOdPvifR6K-FHMRhCEoBtqbBjyITs74c3sMIGDwlMHXHw
+
+###
+PUT http://localhost:8081/api/board/1/like
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MDYzODkwfQ.tcQNLyTMNsmtyj074HK3X78a5cz95washpWDz1HH_qOdPvifR6K-FHMRhCEoBtqbBjyITs74c3sMIGDwlMHXHw
+
+###
+
+

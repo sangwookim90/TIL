@@ -17,4 +17,6 @@ public interface BoardService {
     List<BoardTypeCount> getBoardTypeCount();
     ServiceResult setBoardTop(Long id, boolean flag);
     ServiceResult setBoardPeriod(Long id, BoardPeriod boardPeriod);
+    ServiceResult setBoardHits(Long id, String email);
+    ServiceResult setBoardLike(long id, String email);
 }
