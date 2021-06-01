@@ -195,5 +195,17 @@ Content-Type: application/json
 F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MDYzODkwfQ.tcQNLyTMNsmtyj074HK3X78a5cz95washpWDz1HH_qOdPvifR6K-FHMRhCEoBtqbBjyITs74c3sMIGDwlMHXHw
 
 ###
+PUT http://localhost:8081/api/board/1/unlike
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MTI3NTIyfQ.LKGyXKmz6PQu6QLqP7mjp0vurEv1eNaG5YjUnGOrxthQvY-nnA4QJO2_o2Z2Wy0Hq2Ri0h9SS-HawxqIVI6WEQ
 
+###
+PUT http://localhost:8081/api/board/1/badreport
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MTI3NTIyfQ.LKGyXKmz6PQu6QLqP7mjp0vurEv1eNaG5YjUnGOrxthQvY-nnA4QJO2_o2Z2Wy0Hq2Ri0h9SS-HawxqIVI6WEQ
 
+{
+  "comments" : "불건전합니다"
+}
+
+###
