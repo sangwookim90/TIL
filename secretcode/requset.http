@@ -209,3 +209,6 @@ F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOj
 }
 
 ###
+GET http://localhost:8081/api/admin/board/badreport
+
+###

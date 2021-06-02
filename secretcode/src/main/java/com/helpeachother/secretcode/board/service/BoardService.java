@@ -1,5 +1,6 @@
 package com.helpeachother.secretcode.board.service;
 
+import com.helpeachother.secretcode.board.entity.BoardBadReport;
 import com.helpeachother.secretcode.board.entity.BoardType;
 import com.helpeachother.secretcode.board.model.*;
 import com.helpeachother.secretcode.common.model.ServiceResult;
@@ -21,4 +22,6 @@ public interface BoardService {
     ServiceResult setBoardLike(long id, String email);
     ServiceResult setBoardUnLike(long id, String email);
     ServiceResult addBadReport(Long id, String email, BoardBadReportInput boardBadReportInput);
+    List<BoardBadReport> badReportList();
+    ServiceResult scrapBoard(long id, String email);
 }
