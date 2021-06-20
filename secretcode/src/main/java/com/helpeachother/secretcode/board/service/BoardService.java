@@ -24,4 +24,5 @@ public interface BoardService {
     ServiceResult addBadReport(Long id, String email, BoardBadReportInput boardBadReportInput);
     List<BoardBadReport> badReportList();
     ServiceResult scrapBoard(long id, String email);
+    ServiceResult deleteBoardScrap(long id, String email);
 }

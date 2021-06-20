@@ -30,4 +30,18 @@ public class ApiBoardScrapController {
 
         return ResponseResult.success(boardService.scrapBoard(id, email));
     }
+
+    @DeleteMapping("/api/scarp/{id}")
+    public ResponseEntity<?> deleteBoardScrap(@PathVariable long id,
+                                        @RequestHeader String token) {
+
+        String email = "";
+        try {
+            email = JwtUtils.getIssuer(token);
+        } catch (JWTVerificationException e) {
+            return ResponseResult.fail("토큰 정보가 정확하지 않습니다.");
+        }
+
+        return ResponseResult.success(boardService.deleteBoardScrap(id, email));
+    }
 }
