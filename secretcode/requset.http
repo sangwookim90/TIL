@@ -9,9 +9,11 @@ Content-Type: application/json
 ###
 POST http://localhost:8081/api/notice
 Content-Type: application/json
+
 {
-  "title": "타이틀3",
-  "contents": "contents4"
+  "title": "타이틀3300299212",
+  "contents": "contents4ajdfjqjfadjvlkjqkwlerjklads;fjkl;asdjklqwjekl;rjklreqjkljkl",
+  "userId": 2
 }
 
 ###
@@ -27,7 +29,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8081/api/notice/1/hits
+PATCH http://localhost:8081/api/notice/2/hits
 Content-Type: application/json
 
 
@@ -69,10 +71,10 @@ Content-Type: application/json
 GET http://localhost:8081/api/user/1
 
 ###
-GET http://localhost:8081/api/user/1/notice
+GET http://localhost:8081/api/user/2/notice
 
 ###
-PATCH http://localhost:8081/api/user/1/password
+PATCH http://localhost:8081/api/user/2/password
 Content-Type: application/json
 
 {
@@ -85,12 +87,12 @@ GET http://localhost:8081/api/user
 Content-Type: application/json
 
 {
-  "userName": "test",
-  "phone" : "010-4939-2394"
+  "userName": "test2",
+  "phone" : "010-1234-5678"
 }
 
 ###
-GET http://localhost:8081/api/user/1/notice/like
+GET http://localhost:8081/api/user/2/notice/like
 
 ###
 POST http://localhost:8081/api/user/login
@@ -126,7 +128,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8081/api/admin/user/1/status
+PATCH http://localhost:8081/api/admin/user/2/status
 Content-Type: application/json
 
 {
@@ -154,7 +156,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:8081/api/board/type/1/using
+PATCH http://localhost:8081/api/board/type/2/using
 Content-Type: application/json
 
 {
@@ -185,22 +187,22 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:8081/api/board/1/hits
+PUT http://localhost:8081/api/board/2/hits
 Content-Type: application/json
 F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MDYzODkwfQ.tcQNLyTMNsmtyj074HK3X78a5cz95washpWDz1HH_qOdPvifR6K-FHMRhCEoBtqbBjyITs74c3sMIGDwlMHXHw
 
 ###
-PUT http://localhost:8081/api/board/1/like
+PUT http://localhost:8081/api/board/2/like
 Content-Type: application/json
 F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MDYzODkwfQ.tcQNLyTMNsmtyj074HK3X78a5cz95washpWDz1HH_qOdPvifR6K-FHMRhCEoBtqbBjyITs74c3sMIGDwlMHXHw
 
 ###
-PUT http://localhost:8081/api/board/1/unlike
+PUT http://localhost:8081/api/board/2/unlike
 Content-Type: application/json
 F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MTI3NTIyfQ.LKGyXKmz6PQu6QLqP7mjp0vurEv1eNaG5YjUnGOrxthQvY-nnA4QJO2_o2Z2Wy0Hq2Ri0h9SS-HawxqIVI6WEQ
 
 ###
-PUT http://localhost:8081/api/board/1/badreport
+PUT http://localhost:8081/api/board/2/badreport
 Content-Type: application/json
 F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI1MTI3NTIyfQ.LKGyXKmz6PQu6QLqP7mjp0vurEv1eNaG5YjUnGOrxthQvY-nnA4QJO2_o2Z2Wy0Hq2Ri0h9SS-HawxqIVI6WEQ
 
@@ -215,5 +217,10 @@ GET http://localhost:8081/api/admin/board/badreport
 PUT http://localhost:8081/api/user/2/interest
 Content-Type: application/json
 F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI3MTkwMjQ1fQ.AaQ72nvhhTUL_QgozCn027uOnnBNZvyNr5WAfOhxxx15EYDGgCplccEjMuLHR6NH-3EYv_-ma7EbQqNjvCmQog
+
+###
+GET http://localhost:8081/api/user/board/post
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MiIsInVzZXJfaWQiOjIsImlzcyI6InRlc3QyQHRlc3QuY29tIiwiZXhwIjoxNjI3Mzc1MDEzfQ.hMyv4J39TnWkwjGuYtTAbKTeE2OAe3OJ37QOXzipMAF0DE7WLEOUB0db2ojjpalrWBrXq-gX4iNihFdGDSluvg
 
 ###

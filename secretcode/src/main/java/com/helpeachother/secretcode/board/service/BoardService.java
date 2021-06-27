@@ -1,5 +1,6 @@
 package com.helpeachother.secretcode.board.service;
 
+import com.helpeachother.secretcode.board.entity.Board;
 import com.helpeachother.secretcode.board.entity.BoardBadReport;
 import com.helpeachother.secretcode.board.entity.BoardType;
 import com.helpeachother.secretcode.board.model.*;
@@ -27,4 +28,11 @@ public interface BoardService {
     ServiceResult deleteBoardScrap(long id, String email);
     ServiceResult addBookmark(long id, String email);
     ServiceResult removeBookmark(long id, String email);
+
+    /**
+     * 내가 작성한 게시글 조회
+     * @param email
+     * @return
+     */
+    List<Board> postList(String email);
 }

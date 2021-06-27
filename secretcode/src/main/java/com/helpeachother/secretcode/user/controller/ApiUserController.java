@@ -3,6 +3,8 @@ package com.helpeachother.secretcode.user.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.helpeachother.secretcode.board.entity.Board;
+import com.helpeachother.secretcode.board.service.BoardService;
 import com.helpeachother.secretcode.common.model.ResponseResult;
 import com.helpeachother.secretcode.notice.entity.Notice;
 import com.helpeachother.secretcode.notice.entity.NoticeLike;
@@ -42,6 +44,7 @@ public class ApiUserController {
     private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
     private final NoticeLikeRepository noticeLikeRepository;
+    private final BoardService boardService;
 
     private String getEncryptPassword(String password) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -265,6 +268,23 @@ public class ApiUserController {
         // 클라이언트 쿠키 / 로컬스토리지 / 세션 스토리지 삭제
 
         return ResponseEntity.ok().build();
+
+    }
+
+    /**
+     * 내가 작성한 게시글 목록을 리턴하는 API
+     */
+    @GetMapping("/api/user/board/post")
+    public ResponseEntity<?> myPost(@RequestHeader("F-TOKEN") String token) {
+        String email = "";
+        try {
+            email = JwtUtils.getIssuer(token);
+        } catch (SignatureVerificationException e) {
+            return ResponseResult.fail("토큰 정보가 정확하지 않습니다.");
+        }
+
+        List<Board> boardList = boardService.postList(email);
+        return ResponseResult.success(boardList);
 
     }
 

@@ -4,6 +4,7 @@ import com.helpeachother.secretcode.board.entity.*;
 import com.helpeachother.secretcode.board.exception.BoardTypeNotFoundException;
 import com.helpeachother.secretcode.board.model.*;
 import com.helpeachother.secretcode.board.repository.*;
+import com.helpeachother.secretcode.common.exception.BizException;
 import com.helpeachother.secretcode.common.model.ServiceResult;
 import com.helpeachother.secretcode.user.entity.User;
 import com.helpeachother.secretcode.user.repository.UserRepository;
@@ -357,5 +358,17 @@ public class BoardServiceImpl implements BoardService {
 
         boardBookmarkRepository.deleteById(id);
         return ServiceResult.success();
+    }
+
+    @Override
+    public List<Board> postList(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if(!optionalUser.isPresent()) {
+             throw new BizException("회원 정보가 존재하지 않습니다.");
+        }
+        User user = optionalUser.get();
+
+        List<Board> boardList = boardRepository.findByUser(user);
+        return boardList;
     }
 }
