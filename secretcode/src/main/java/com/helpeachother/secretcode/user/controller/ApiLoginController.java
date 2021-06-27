@@ -1,5 +1,6 @@
 package com.helpeachother.secretcode.user.controller;
 
+import com.helpeachother.secretcode.common.exception.BizException;
 import com.helpeachother.secretcode.common.model.ResponseResult;
 import com.helpeachother.secretcode.notice.model.ResponseError;
 import com.helpeachother.secretcode.user.entity.User;
@@ -22,15 +23,26 @@ public class ApiLoginController {
 
     private final UserService userService;
 
+    /**
+     * 회원 로그인 히스토리 기능 API
+     */
     @PostMapping("/api/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserLogin userLogin, Errors errors) {
         if(errors.hasErrors()) {
             return ResponseResult.fail("입력값이 정확하지 않습니다.", ResponseError.of(errors.getAllErrors()));
         }
 
-        User user = userService.login(userLogin);
+        User user = null;
+        try {
+            user = userService.login(userLogin);
+        } catch (BizException e) {
+            return ResponseResult.fail(e.getMessage());
+        }
 
         UserLoginToken userLoginToken = JwtUtils.createToken(user);
+        if(userLoginToken == null) {
+            return ResponseResult.fail("JWT 생성에 실패하였습니다.");
+        }
         return ResponseResult.success(userLoginToken);
     }
 

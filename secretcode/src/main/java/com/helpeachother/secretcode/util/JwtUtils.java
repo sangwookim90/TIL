@@ -20,16 +20,20 @@ public class JwtUtils {
 
     public static UserLoginToken createToken(User user){
 
+        if (user == null) {
+            return null;
+        }
+
         // 토큰 유효기간 1개월
         LocalDateTime expiredDateTime = LocalDateTime.now().plusMonths(1);
         Date expiredDate = java.sql.Timestamp.valueOf(expiredDateTime);
 
         String token = JWT.create()
                 .withExpiresAt(expiredDate)
-                .withClaim("user_id", user.getId())
+                .withClaim(CLAIM_USER_ID, user.getId())
                 .withSubject(user.getUserName())
                 .withIssuer(user.getEmail())
-                .sign(Algorithm.HMAC512("passwordkey".getBytes()));
+                .sign(Algorithm.HMAC512(KEY.getBytes()));
 
         return UserLoginToken.builder()
                 .token(token)

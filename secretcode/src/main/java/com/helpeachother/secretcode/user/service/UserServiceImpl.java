@@ -1,12 +1,15 @@
 package com.helpeachother.secretcode.user.service;
 
+import com.helpeachother.secretcode.common.exception.BizException;
 import com.helpeachother.secretcode.common.model.ServiceResult;
+import com.helpeachother.secretcode.logs.service.LogService;
 import com.helpeachother.secretcode.user.entity.User;
 import com.helpeachother.secretcode.user.entity.UserInterest;
 import com.helpeachother.secretcode.user.model.*;
 import com.helpeachother.secretcode.user.repository.UserCustomRepository;
 import com.helpeachother.secretcode.user.repository.UserInterestRepository;
 import com.helpeachother.secretcode.user.repository.UserRepository;
+import com.helpeachother.secretcode.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -68,12 +71,15 @@ public class UserServiceImpl implements UserService {
     public User login(UserLogin userLogin) {
         Optional<User> optionalUser = userRepository.findByEmail(userLogin.getEmail());
         if(!optionalUser.isPresent()) {
-//            throw new BizException
+            throw new BizException("회원 정보가 존재하지 않습니다.");
         }
         User user = optionalUser.get();
 
-        return user;
+        if(!PasswordUtils.equalPassword(userLogin.getPassword(), user.getPassword())) {
+            throw new BizException("일치하는 정보가 않습니다.");
+        }
 
+        return user;
     }
 
     @Override

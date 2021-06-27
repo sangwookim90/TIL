@@ -3,6 +3,17 @@ POST http://localhost:8081/api/user
 Content-Type: application/json
 
 {
+  "email" : "test@test.com",
+  "userName" : "test",
+  "password" : "1111",
+  "phone" : "010-4939-2394"
+}
+
+###
+POST http://localhost:8081/api/user
+Content-Type: application/json
+
+{
   "email" : "test1@test.com",
   "userName" : "test1",
   "password" : "12341234",

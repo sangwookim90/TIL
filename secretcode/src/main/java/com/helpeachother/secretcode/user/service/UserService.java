@@ -21,6 +21,11 @@ public interface UserService {
 
     List<UserLogCount> getUserLikeBest();
 
+    /**
+     * 로그인 정보 확인
+     * @param userLogin
+     * @return
+     */
     User login(UserLogin userLogin);
 
     /**
