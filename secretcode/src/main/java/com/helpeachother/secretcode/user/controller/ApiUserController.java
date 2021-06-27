@@ -7,6 +7,7 @@ import com.helpeachother.secretcode.board.entity.Board;
 import com.helpeachother.secretcode.board.entity.BoardComment;
 import com.helpeachother.secretcode.board.service.BoardService;
 import com.helpeachother.secretcode.common.model.ResponseResult;
+import com.helpeachother.secretcode.common.model.ServiceResult;
 import com.helpeachother.secretcode.notice.entity.Notice;
 import com.helpeachother.secretcode.notice.entity.NoticeLike;
 import com.helpeachother.secretcode.notice.model.NoticeVo;
@@ -19,6 +20,7 @@ import com.helpeachother.secretcode.user.exception.PasswordNotMatchException;
 import com.helpeachother.secretcode.user.exception.UserNotFoundException;
 import com.helpeachother.secretcode.user.model.*;
 import com.helpeachother.secretcode.user.repository.UserRepository;
+import com.helpeachother.secretcode.user.service.PointService;
 import com.helpeachother.secretcode.util.JwtUtils;
 import com.helpeachother.secretcode.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +48,7 @@ public class ApiUserController {
     private final NoticeRepository noticeRepository;
     private final NoticeLikeRepository noticeLikeRepository;
     private final BoardService boardService;
+    private final PointService pointService;
 
     private String getEncryptPassword(String password) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -305,6 +308,26 @@ public class ApiUserController {
         List<BoardComment> boardCommentList = boardService.commentList(email);
         return ResponseResult.success(boardCommentList);
     }
+
+    /**
+     * 사용자의 포인트 정보를 만들고 게시글을 작성할 경우, 포인트를 누적하는 API
+     */
+    @PostMapping("/api/user/point")
+    public ResponseEntity<?> userPoint(@RequestHeader("F-TOKEN") String token,
+                          @RequestBody UserPointInput userPointInput) {
+        String email = "";
+        try {
+            email = JwtUtils.getIssuer(token);
+        } catch (SignatureVerificationException e) {
+            return ResponseResult.fail("토큰 정보가 정확하지 않습니다.");
+        }
+
+        ServiceResult result = pointService.addPoint(email, userPointInput);
+        return ResponseResult.result(result);
+
+    }
+
+
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> UserNotFoundExceptionHandler(UserNotFoundException exception) {
