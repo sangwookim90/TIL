@@ -8,10 +8,7 @@ import com.helpeachother.secretcode.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,12 +33,22 @@ public class ApiUserInterestController {
         }
 
         ServiceResult result = userService.addInterestUser(email, id);
-        if(result.isFail()) {
-            return ResponseResult.fail(result.getMessage());
+        return ResponseResult.result(result);
+    }
+
+    @DeleteMapping("/api/user/interest/{id}")
+    public ResponseEntity<?> deleteInterestUser(@PathVariable Long id,
+                                                @RequestHeader("F-TOKEN") String token) {
+
+        String email = "";
+        try {
+            email = JwtUtils.getIssuer(token);
+        } catch (SignatureVerificationException e) {
+            return ResponseResult.fail("토큰 정보가 정확하지 않습니다.");
         }
-        return ResponseResult.success();
 
-
+        ServiceResult result = userService.removeInterestUser(email, id);
+        return ResponseResult.result(result);
     }
 
 

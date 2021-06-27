@@ -31,4 +31,13 @@ public interface UserService {
      * @return
      */
     ServiceResult addInterestUser(String email, Long id);
+
+    /**
+     * 관심 사용자 삭제
+     *
+     * @param email
+     * @param id
+     * @return
+     */
+    ServiceResult removeInterestUser(String email, Long id);
 }
