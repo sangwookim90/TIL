@@ -2,6 +2,7 @@ package com.helpeachother.secretcode.board.service;
 
 import com.helpeachother.secretcode.board.entity.Board;
 import com.helpeachother.secretcode.board.entity.BoardBadReport;
+import com.helpeachother.secretcode.board.entity.BoardComment;
 import com.helpeachother.secretcode.board.entity.BoardType;
 import com.helpeachother.secretcode.board.model.*;
 import com.helpeachother.secretcode.common.model.ServiceResult;
@@ -35,4 +36,11 @@ public interface BoardService {
      * @return
      */
     List<Board> postList(String email);
+
+    /**
+     * 내가 작성한 코멘트 조회
+     * @param email
+     * @return
+     */
+    List<BoardComment> commentList(String email);
 }

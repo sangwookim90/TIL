@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.helpeachother.secretcode.board.entity.Board;
+import com.helpeachother.secretcode.board.entity.BoardComment;
 import com.helpeachother.secretcode.board.service.BoardService;
 import com.helpeachother.secretcode.common.model.ResponseResult;
 import com.helpeachother.secretcode.notice.entity.Notice;
@@ -286,6 +287,23 @@ public class ApiUserController {
         List<Board> boardList = boardService.postList(email);
         return ResponseResult.success(boardList);
 
+    }
+
+    /**
+     * 내가 작성한 코멘트 목록을 리턴하는 API
+     */
+    @GetMapping("/api/user/board/comments")
+    public ResponseEntity<?> myComments(@RequestHeader("F-TOKEN") String token) {
+
+        String email = "";
+        try {
+            email = JwtUtils.getIssuer(token);
+        } catch (SignatureVerificationException e) {
+            return ResponseResult.fail("토큰 정보가 정확하지 않습니다.");
+        }
+
+        List<BoardComment> boardCommentList = boardService.commentList(email);
+        return ResponseResult.success(boardCommentList);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
