@@ -211,4 +211,9 @@ F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOj
 ###
 GET http://localhost:8081/api/admin/board/badreport
 
+### 관심등록
+PUT http://localhost:8081/api/user/2/interest
+Content-Type: application/json
+F-TOKEN: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MSIsInVzZXJfaWQiOjEsImlzcyI6InRlc3QxQHRlc3QuY29tIiwiZXhwIjoxNjI3MTkwMjQ1fQ.AaQ72nvhhTUL_QgozCn027uOnnBNZvyNr5WAfOhxxx15EYDGgCplccEjMuLHR6NH-3EYv_-ma7EbQqNjvCmQog
+
 ###

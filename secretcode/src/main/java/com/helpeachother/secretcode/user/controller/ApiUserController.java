@@ -3,6 +3,7 @@ package com.helpeachother.secretcode.user.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.helpeachother.secretcode.common.model.ResponseResult;
 import com.helpeachother.secretcode.notice.entity.Notice;
 import com.helpeachother.secretcode.notice.entity.NoticeLike;
 import com.helpeachother.secretcode.notice.model.NoticeVo;
@@ -256,7 +257,7 @@ public class ApiUserController {
         try {
             email = JwtUtils.getIssuer(token);
         } catch (SignatureVerificationException e) {
-            return new ResponseEntity<>("토큰 정보가 정확하지 않습니다.", HttpStatus.BAD_REQUEST);
+            return ResponseResult.fail("토큰 정보가 정확하지 않습니다.");
         }
 
         // 세션 또는 쿠키 삭제
