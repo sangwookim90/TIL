@@ -1,6 +1,6 @@
 package com.helpeachother.secretcode.common.aop;
 
-import com.helpeachother.secretcode.logs.service.LogService;
+import com.helpeachother.secretcode.log.service.LogService;
 import com.helpeachother.secretcode.user.entity.User;
 import com.helpeachother.secretcode.user.model.UserLogin;
 import lombok.RequiredArgsConstructor;

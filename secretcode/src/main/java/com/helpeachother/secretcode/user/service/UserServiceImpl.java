@@ -2,7 +2,6 @@ package com.helpeachother.secretcode.user.service;
 
 import com.helpeachother.secretcode.common.exception.BizException;
 import com.helpeachother.secretcode.common.model.ServiceResult;
-import com.helpeachother.secretcode.logs.service.LogService;
 import com.helpeachother.secretcode.user.entity.User;
 import com.helpeachother.secretcode.user.entity.UserInterest;
 import com.helpeachother.secretcode.user.model.*;
@@ -13,7 +12,6 @@ import com.helpeachother.secretcode.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
