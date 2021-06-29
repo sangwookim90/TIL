@@ -43,4 +43,11 @@ public interface BoardService {
      * @return
      */
     List<BoardComment> commentList(String email);
+
+    /**
+     * 게시글 상세 정보
+     * @param id
+     * @return
+     */
+    Board detail(Long id);
 }

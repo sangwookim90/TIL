@@ -1,9 +1,11 @@
 package com.helpeachother.secretcode.board.controller;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.helpeachother.secretcode.board.entity.Board;
 import com.helpeachother.secretcode.board.entity.BoardType;
 import com.helpeachother.secretcode.board.model.*;
 import com.helpeachother.secretcode.board.service.BoardService;
+import com.helpeachother.secretcode.common.exception.BizException;
 import com.helpeachother.secretcode.common.model.ResponseResult;
 import com.helpeachother.secretcode.common.model.ServiceResult;
 import com.helpeachother.secretcode.notice.model.ResponseError;
@@ -166,5 +168,19 @@ public class ApiBoardController {
         ServiceResult result = boardService.addBadReport(id, email, boardBadReportInput);
         return ResponseResult.result(result);
 
+    }
+
+    /**
+     *  AOP의 Around를 이용하여 게시판 상세 조회에 대한 히스토리 기록하는 기능
+     */
+    @GetMapping("/api/board/{id}")
+    public ResponseEntity<?> detail(@PathVariable Long id) {
+        Board board = null;
+        try {
+            board = boardService.detail(id);
+        } catch (BizException e) {
+            return ResponseResult.fail(e.getMessage());
+        }
+        return ResponseResult.success(board);
     }
 }
