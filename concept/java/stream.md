@@ -177,3 +177,20 @@ Stream<Object> stream = Stream.empty();
 System.out.println(stream.count()); // 스트림의 요소의 총 개수를 출력함. --> 0
 ```
 
+---
+
+### 크로노스 실 사례
+
+```java
+List<Application> applications = applicationRepository.findByid(1L);
+
+// 일반적인 방법
+List<ApplicationVo> applicationVos = new Arraylist<ApplicationVo>();
+for(Application ap : applications){
+    applicationVos.add(mapper.map(ap,ApplicationVo.class));
+}
+
+// Stream 표현식
+List<ApplicationVo> applicationVos = applications.stream().map(application -> mapper.map(ap,ApplicationVo.class)).collect(Collectors.toList());
+```
+
