@@ -87,6 +87,7 @@ public class N과M_중복불허_M개순서나열 {
         N = scan.nextInt();
         M = scan.nextInt();
         selected = new int[M+1];
+        used = new int[N+1];
 
     }
 
