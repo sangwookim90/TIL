@@ -116,3 +116,21 @@ div .orange {
   <li>사과</li>
 </ul>
 ```
+
+
+## 기타
+### 속성 선택자
+- 특정 속성을 포함한 요소 선택
+```css
+[disabled] {
+  color: red;
+}
+
+[type="password"] {
+  color: red;
+}
+```
+```html
+<input type="text" value="ABC" disabled>
+<input type="password" value="1234">
+```
