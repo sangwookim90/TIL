@@ -47,9 +47,9 @@
 
 - 블록 레벨 요소를 인라인 레벨 요소로 바꾸거나 반대
 
-- display: none | contents | block | inline | inline-block | table | table-cell 
+- display: none | contents | block | inline | inline-block | table | table-cell | flex | grid
 
-  - Inline-block: 요소를 인라인 레벨로 배치하면서 내용에는 블록 레벨 속성을 지정 (padding, margin, border를 적용위해 block 레벨 필요)
+  - inline-block: 요소를 인라인 레벨로 배치하면서 내용에는 블록 레벨 속성을 지정 (padding, margin, border를 적용위해 block 레벨 필요)
 
     ![](./img/box-model/3.png)
 
