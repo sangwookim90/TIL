@@ -1,0 +1,33 @@
+body {
+  color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+img {
+  display: block;
+}
+
+/* HEADER */
+header {
+  background-color: royalblue;  
+}
+
+header .inner {
+  width: 1100px;
+  height: 120px;
+  margin: 0 auto; /* 좌우 값을 브라우저가 자동으로 계산 */
+  background-color: orange;
+  position: relative;
+}
+
+/* 요소의 길이가 명시되어야 가운데 정렬이 가능하다. */
+header .logo {
+  height: 75px;
+  position: absolute; /* 부모요소 기준으로 배치 */
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
