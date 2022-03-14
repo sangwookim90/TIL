@@ -19,7 +19,6 @@ searchInputEl.addEventListener('blur', function () {
 const badgeEl = document.querySelector('header .badges');
 
 window.addEventListener('scroll', _.throttle(function() {
-  console.log('scroll');
   if(window.scrollY > 500) {
     // gsap.to(요소, 지속시간, 옵션);
     gsap.to(badgeEl, 0.6, {
@@ -45,4 +44,11 @@ fadeEls.forEach(function (fadeEl, index) {
     delay: (index + 1) * .7,
     opacity: 1
   });
+});
+
+// new Swiper(선택자, 옵션)
+new Swiper('.notice-line .swiper-container', {
+  direction: 'vertical',
+  autoplay: true,
+  loop: true
 });
