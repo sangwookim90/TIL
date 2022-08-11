@@ -13,5 +13,8 @@
   "devDependencies": {
     "lodash": "^4.17.21",
     "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "axios": "^0.27.2"
   }
 }
