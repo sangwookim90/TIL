@@ -1,0 +1,96 @@
+@import "./sub", "./sub2";
+
+$color: royalblue;
+.container {
+  ul {
+    li{
+      font: {
+        weight: bold;
+        size: 40px;
+        family: sans-serif;
+      };
+      margin: {
+        top: 10px;
+        left: 20px;
+      };
+      padding: {
+        top: 10px;
+        bottom:30px;
+        left:50px;
+      }
+
+      .name {
+        color: royalblue;
+      }
+      .age {
+        color: orange;
+      }
+    }  
+  }
+}
+
+/* 1-9 재활용 */
+
+@mixin center {
+  display: flex;
+  justify-content: center;  // 가로 가운데
+  align-items:center;       // 세로 가운데
+}
+
+@mixin box($size: 100px, $color: tomato) {
+  width: $size;
+  height: $size;
+  background-color: $color;
+}
+
+.box {
+  @include box(200px);  
+  @include center;
+
+  .item {
+    @include box($color: royalblue);
+    @include center;
+    
+  }
+}
+
+/* 1-10 반복문 */
+@for $i from 1 through 10 {
+  .box:nth-child(#{$i}) {
+    width: 100px * $i;
+  }
+}
+
+/* 1-11 함수 */
+@function ratio($size, $ratio) {
+  @return $size * $ratio
+}
+
+.box-func {
+  $width: 100px;
+  width: $width;
+  height: ratio($width, 1/2);
+  @include center;
+}
+
+/* 1-12 색상 내장 함수 */
+.box12 {
+  $color: royalblue;
+  width: 200px;
+  height: 100px;
+  margin: 20px;
+  border-radius: 10px;
+  background-color: $color;
+  &.built-in {
+    // background-color: mix($color, red);
+    // background-color: lighten($color, 10%);
+    // background-color: darken($color, 10%);
+    // background-color: saturate($color, 40%); // 채도
+    // background-color: grayscale($color);
+    // background-color: invert($color); // 색상 반전
+    background-color: rgba($color, .5); // 투명도
+  }
+  &:hover {
+    background-color: darken($color, 10%);
+  }
+}
