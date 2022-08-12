@@ -94,3 +94,66 @@ $color: royalblue;
     background-color: darken($color, 10%);
   }
 }
+
+/* 1-15 데이터 종류 */
+$number: 1;
+$string: bold;
+$color: red;
+$boolean: true;
+$null: null;
+$list: orange, royalblue, yellow;
+$map: (
+  o: orange,
+  r: royalblue,
+  y: yellow
+);
+
+/* 1-16 반복문 @each */
+
+@each $c in $list {
+  .box {
+    color: $c;
+  }
+}
+
+@each $k, $v in $map {
+  .box-#{$k} {
+    color: $v;
+  }
+}
+
+// .box-o {
+//   color: orange;
+// }
+// .box-r {
+//   color: royalblue;
+// }
+// .box-y {
+//   color: yellow;
+// }
+
+/* 1-17 재활용 @content */
+@mixin left-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @content;   // 재활용
+}
+
+.container17 {
+  background-color: purple;
+  width: 100px;
+  height: 100px;
+  @include left-top;
+}
+
+.box18 {
+  background-color: yellow;
+  width: 200px;
+  height: 300px;
+  @include left-top {
+    bottom: 0;
+    right: 0;
+    margin: auto;
+  }
+}
